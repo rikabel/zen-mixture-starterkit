@@ -1,0 +1,562 @@
+{% block bodytag %}<body class="wrapper html one-sidebar sidebar-second">{% endblock %}
+
+
+{% block sidebars %}
+<section class="region region-sidebar-second column sidebar">
+	<div class="block first">
+		<h2 class="block__title">Table of contents</h2>
+		<div class="content">
+			<div id="toc">
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block content %}
+
+	<h1 class="tlt" data-in-effect="fadeInDown">and. frontend workflow and design guide</h1>
+
+<h2>Overview</h2>
+
+<p>This document cover the <strong>and.</strong> front-end development workflow and best practises to follow when building new websites. It is an evolving document and should be reviewed as and when required to keep up with changes in technology and best practice.</p>
+
+<p>Sites are first built out as static HTML5 templates using the <a href="http://mixture.io">Mixture</a> frontend framework generator. We use a custom starter template which closely mirrors the <a href="https://drupal.org/project/zen">Zen</a> base theme for <a href="https://drupal.org/">Drupal</a>, which speeds up porting of code from former to the latter.</p>
+
+<ul>
+<li>This document is written in <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, which we use for internal documentation (also used by github, Drupal etc). <a href="http://moupapp.com">Mou</a> is a nice OS X markdown editor.</li>
+</ul>
+
+
+<h2>General Guidelines</h2>
+
+<ul>
+<li>All front-end code should display clear separation of presentation, content, and behaviour.</li>
+<li>Markup should be well formed, semantically correct and generally valid.</li>
+<li>JavaScript should progressively enhance the experience</li>
+<li>Use feature detection rather than browser sniffing (edge cases such as performance are acceptable)</li>
+<li>Gracefully degrade functionality when not present (e.g GPS, box-shadow, forms etc).</li>
+</ul>
+
+
+<h2>Coding standards and Markup</h2>
+
+<h3>HTML5</h3>
+
+<p>The HTML5 Doctype and HTML5 features will be used on projects when appropriate.</p>
+
+<h3>Sass/CSS</h3>
+
+<p>See the <a href="http://css-tricks.com/sass-style-guide/">CSS Tricks Sass Style Guide</a> and <a href="http://www.sitepoint.com/css-sass-styleguide/">Hugo Giruadel's Sass/CSS styleguide</a> for general recommendations.</p>
+
+<p>Sass files are organized to match the organization of files in the Drupal Zen base theme (our base theme of choice). We have created a static HTML starterkit which uses exactly the same directory structure and file names in order to ease moving from the static HTML markup to the Drupal theme markup.</p>
+
+<h4>Formatting</h4>
+
+<p>At minimum, format CSS with selectors on one line and each property on its own line. The declarations are indented.</p>
+
+<p>As an enhancement to that style, related or child styles and additional 2 or 4 spaces. That allows for hierarchical scanning and organization and makes (for some people) an easier-to-read style sheet.</p>
+
+<p>Also, if you specify multiple selectors, it's a good idea to start each on new line. This prevents lines from growing long and improves readability as well as version control workflow.</p>
+
+<p>Try not to nest selectors more than three deep if at all possible, as increased specificity can lead to unmaintainable code with numerous escalating overrides.</p>
+
+<p>Please don't use the "!important" declaration.</p>
+
+<pre><code>.selector,
+.other-selector {
+  color: black;
+  padding: .5em;
+  font-size: 1.2em;
+}
+</code></pre>
+
+<ul>
+<li>One selector per line</li>
+<li>One space before the opening curly brace</li>
+<li>A line break after the opening curly brace</li>
+<li>A consistent indent</li>
+<li>No space before the colon</li>
+<li>A space after the colon</li>
+<li>No space before the semi-colon</li>
+<li>A line break after the semi-colon</li>
+<li>No space before the closing curly brace</li>
+<li><p>A line break and an empty line after the closing curly brace</p></li>
+<li><p><a href="http://css-tricks.com/sass-style-guide/">CSS Tricks Sass Style Guide</a></p></li>
+<li><a href="http://www.sitepoint.com/css-sass-styleguide/">Hugo Giruadel's Sass/CSS styleguide</a></li>
+</ul>
+
+
+<h4>Specificity, IDs and classes</h4>
+
+<p>CSS is designed to cascade, so make sure you understand cascading and selector specificity. It will enable you to write very terse and effective code.</p>
+
+<p>Use of IDs and classes effect specificity massively. Only use IDs where deemed necessary, especially on larger builds. Classes are much more modular and portable. If you want to use an ID solely as a JavaScript hook, consider using the ID alongside a class for CSS styling.</p>
+
+<p>Name classes and IDs by the nature of what it is rather than what it looks like. A class of blueBox-left may seem relevant at the time, but should its colour or position change, it will become meaningless. Naming in conjunction with a more OOCSS approach should eliminate this ambiguity.</p>
+
+<h4>BEM</h4>
+
+<p>BEM stands for Block, Element, Modifier and provides a clever and clear way of writing CSS (or Sass) classes in order that they are maintainable, consistent, and understandable by other developers.</p>
+
+<pre><code>.block { }
+.block--modifier { }
+.block__element { }
+.block__element--modifier { }
+</code></pre>
+
+<ul>
+<li><a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">Getting your head round BEM syntax</a></li>
+<li><a href="http://www.sitepoint.com/css-sass-styleguide/">Hugo Giruadel's Sass/CSS styleguide</a></li>
+<li><a href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/">Nicolas Gallagher on BEM</a></li>
+</ul>
+
+
+<h4>Media queries</h4>
+
+<p>We use sass' inline media queries to keep all queries with the elements they are modifying. Do not put media queries in a separate document (unless they are global layout specific).</p>
+
+<p><a href="http://thesassway.com/intermediate/responsive-web-design-in-sass-using-media-queries-in-sass-32">Responsive Web Design in Sass: Using media queries in Sass 3.2</a></p>
+
+<h3>JavaScript/jQuery</h3>
+
+<p>JS should be used for progressive enhancement rather than for providing essential features. Where possible, use Sass/CSS for animations and transitions, since these are more performant than JS-powered equivalents.</p>
+
+<p>Wrap functions in self-invoking anonymous functions.</p>
+
+<h3>Feature Detection</h3>
+
+<p>To ensure HTML5 markup compatibility with older browsers, we use <a href="http://modernizr.com/">Modernizr</a> to feature detect and provide polyfills for missing functionality (eg respond.js to implement media queries in IE8 and below). Modernizr allow us to use progressive enhancement while providing a solid foundation for less capable browsers/devices.</p>
+
+<h3>Mobile-First</h3>
+
+<p>Our sites are built with a "mobile-first" approach. Practically speaking, this mostly applies to how Sass is coded and how media queries are approached. The Sass for the base, mobile experience is coded, then we add media queries for larger screen sizes using the 'resize until it looks crap' methodology.</p>
+
+<p>Animations and effects can be added as supported via modernizr classes applied to the body element and the handy <a href="http://roytomeij.com/blog/2011/modernizr-the-sass-parent-reference.html">Sass parent reference</a></p>
+
+<h2>Tools</h2>
+
+<h3>Mixture</h3>
+
+<p><a href="http://mixture.io">Mixture.io</a> is a front-end toolkit/static site generator which we use to build the static HTML version of a site from signed-off designs, before implementation in Drupal.</p>
+
+<p>Mixture has lots of great features which speed up the development process including:</p>
+
+<ul>
+<li>templates, template tags and includes - keeping stuff DRY.</li>
+<li>Sass compilation</li>
+<li>style injection (live reload)</li>
+<li>compile HTML version of site</li>
+<li>upload site to web for viewing online</li>
+<li>browserstack integration (including local site testing)</li>
+<li>image optimisation with ImageOptim.</li>
+<li>concatenation and minification of JS and CSS files</li>
+</ul>
+
+
+<h3>And. starterkit template</h3>
+
+<p>We have created a custom and. starterkit template which is based upon the Drupal zen base theme and uses Sass, Compass and <a href="http://zengrids.com">Zen Grids</a>. We have also integrated <a href="http://geoffgraham.me/animate-scss/">animate.scss</a> for Sass animations and transitions and <a href="http://modernizr.com">Modernizr</a> for feature detection (rather than browser-sniffing, which is silly). The starterkit also includes <a href="https://github.com/scottjehl/Respond">respond.js</a> for implementing media query support for IE8 and below.</p>
+
+<h4>Template structure</h4>
+
+<ul>
+<li>styles.scss (the main style file which imports all others - custom styles in here please)
+
+<ul>
+<li>_init.scss (support for IE versions, font sizes, font stacks, branding colour variables etc)
+
+<ul>
+<li>_zen.scss
+
+<ul>
+<li>/zen/_grids.scss (mixins for zen grids system)</li>
+</ul>
+</li>
+<li>_mixins.scss (custom mixins for your project)</li>
+</ul>
+</li>
+<li>_normalise.scss (normalisation)</li>
+<li>_animate.scss (Sass animation mixins)
+
+<ul>
+<li><ul>
+<li>various animation includes...</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>/layouts/_responsive.scss (media queries for page regions)</li>
+<li>/components/_misc.scss (mostly Zen-theme related stuff but there are styles here for header, navigation which might not be obvious)</li>
+</ul>
+
+
+<p> ## Starterkit technologies included</p></li>
+</ul>
+
+
+<h3>Sass, Compass and Zen Grids</h3>
+
+<p>The starterkit uses Sass, Compass and <a href="http://zengrids.com">Zen Grids</a> - as does the Zen theme.</p>
+
+<h3>Animate.scss</h3>
+
+<p>We have also integrated <a href="http://geoffgraham.me/animate-scss/">animate.scss</a> for Sass animations and transitions.</p>
+
+<h3>Modernizr</h3>
+
+<p><a href="http://modernizr.com">Modernizr</a> is used for feature detection.</p>
+
+<h3>Respond.js</h3>
+
+<p><a href="https://github.com/scottjehl/Respond">respond.js</a> to implement media query support for IE8 and below.</p>
+
+<h3>Responsive nav</h3>
+
+<p><a href="http://responsive-nav.com/">Responsive nav</a> is nice simple plugin, just for prototyping</p>
+
+<h2>Templates</h2>
+
+<p>At the moment, there is a full-width template, a sidebar left template, sidebar right template, and two sidebars template. These base templates may be added to over time if we find we regularly use other patterns.</p>
+
+<h2>Other goodies</h2>
+
+<p>The starterkit also includes our front-end style guide, coding best practices and workflow on the home page, and a web style guide with commonly used HTML elements so you can see what you might have missed in your custom theme CSS.</p>
+
+<h3>Sublime Text</h3>
+
+<p>It isn't <em>required</em> to use <a href="http://www.sublimetext.com/3">Sublime Text</a> as your code editor. But we will laugh at you if you don't. Unless you use vim. Or maybe Atom. You can easily install a plug-in for Sass syntax highlighting, and also another for <a href="https://sublime.wbond.net/packages/SublimeLinter-contrib-scss-lint">Sass linting</a> (with <a href="http://sublimelinter.readthedocs.org/en/latest/">SublimeLinter</a>), which will help to maintain coding standards.</p>
+
+<h4>Emmet (zen coding)</h4>
+
+<p>The <a href="https://github.com/sergeche/emmet-sublime">Emmet plugin</a> for Sublime Text will massively speed up your coding of HTML or Sass if you spend a little time (an hour or two), <a href="http://docs.emmet.io/">learning Emmet</a>.</p>
+
+<h4>ST + Emmet + BEM, oh my!</h4>
+
+<p>Putting it all together, there is a <a href="http://docs.emmet.io/filters/bem/">BEM Filter for Emmet for Sublime Text</a>. Of course there is. The only way we can get faster is if someone writes a Sublime Text direct brain interface plugin, frankly.</p>
+
+<h3>MAMP</h3>
+
+<p>We use <a href="http://mamp.info">MAMP</a> to develop Drupal sites locally. This may change to Acquia Dev Desktop in future...</p>
+
+<h3>Git</h3>
+
+<p>We use git for version control, and try to keep it as simple as possible. Generally speaking, our projects aren't sufficiently complex to require branching etc. Bitbucket.org is used for repos.</p>
+
+<p><strong>Do not</strong> version control the CSS files as the Sass files are the canonical versions (i.e. what we edit) -- the CSS is compiled from the Sass files. Add the CSS folder (and .sass-cache) to your .gitignore file.</p>
+
+<h3>Browserstack</h3>
+
+<p><a href="http://www.browserstack.com/">Browserstack</a> is used for cross-browser/platform testing in preference to e.g. Virtual machines, since it <em>just works</em> and also supports device emulation these days. Browserstack is integrated into Mixture so we can easily test static sites as we build locally, thus hopefully eliminating most bugs before we start the Drupal build.</p>
+
+<h3>Drupal</h3>
+
+<p>We use the <a href="http://drupal.org">Drupal</a> content management platform. Currently we are using Drupal 7 but looking to move to D8 as soon as is reasonable.</p>
+
+<h4>Drush Make</h4>
+
+<p>Drush make files can speed up the creation of new 'white-label' sites by defining which version of Drupal is required, what contrib modules, user profiles and more! Can also be used with Features module to deploy sites (see Deployment section later in document).</p>
+
+<ul>
+<li><a href="http://www.hashbangcode.com/blog/getting-started-drush-make">Getting Started With Drush Make</a></li>
+<li><a href="https://drupal.org/node/1432374">Full example drupal-org.make file</a></li>
+<li><a href="http://drushmake.me/">Drush Make generator</a></li>
+</ul>
+
+
+<h4>Installation Profiles</h4>
+
+<p>To be written</p>
+
+<h4>Performance</h4>
+
+<ul>
+<li>Minify and concatenate all CSS and JS files for production site.</li>
+<li>Optimise all images with ImageOptim or equivalent</li>
+<li>Adaptive Images</li>
+</ul>
+
+
+<h4>List of contrib modules we always use</h4>
+
+<ul>
+<li>administration menu <strong>D8</strong></li>
+<li>Advanced Help</li>
+<li>Backup Migrate <strong>D8</strong></li>
+<li>Backup Migrate Files <strong>D8</strong></li>
+<li>Block Class</li>
+<li>CKEditor <strong>D8 Core</strong></li>
+<li>Chaos Tools <strong>D8</strong></li>
+<li>Devel <strong>D8</strong></li>
+<li>Drush <strong>D8</strong></li>
+<li>Entity API</li>
+<li>Features <strong>D8 - but new .YAML based config management system is core</strong></li>
+<li>Fences</li>
+<li>Field Group <strong>D8</strong></li>
+<li>jQuery update</li>
+<li>Libraries <strong>D8</strong></li>
+<li>Media</li>
+<li>Menu Block <strong>D8 blocks are entities, so not required</strong></li>
+<li>Module Filter</li>
+<li>Pathauto</li>
+<li>Strongarm</li>
+<li>Token</li>
+<li>Views <strong>D8 Core</strong></li>
+<li>XML Sitemap</li>
+</ul>
+
+
+<h3>Site configuration setup</h3>
+
+<ul>
+<li>Disable user logins</li>
+<li>Disable overlay module</li>
+<li></li>
+</ul>
+
+
+<h2>Drupal deployment options</h2>
+
+<h3>Drupal and git:</h3>
+
+<ul>
+<li><a href="https://drupal.org/node/803746">Building a Drupal site with Git (drupal.org)</a></li>
+<li><a href="http://www.matteoagosti.com/blog/2013/01/17/drupal-website-development-using-a-git-workflow/">Drupal Website Development Using a GIT Workflow</a></li>
+</ul>
+
+
+<p>Generally speaking, the more configuration settings we can move into code – rather than database – the better, since we can then version control more stuff, which will help automate deployment and avoid tedious repetition of tasks.</p>
+
+<ul>
+<li>Create a central repo on bitbucket from which all environments will pull.</li>
+<li>Locally clone Drupal (or use Drush Make file to configure stuff and install modules etc)</li>
+<li></li>
+</ul>
+
+
+<p><strong>probably going to delete this gitflow stuff...</strong></p>
+
+<h3>gitflow:</h3>
+
+<p>Gitflow is a git branching model which was originally developed for continuous integration development of web apps. However, it has been successfully used with some modifications for Drupal deployment.</p>
+
+<p>Pros: all developers on same page, consistent development methodology
+Cons: probably overkill for Drupal, requires non-trivial knowledge of git (branching, mainly)</p>
+
+<ul>
+<li><a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a></li>
+<li><a href="https://github.com/nvie/gitflow">gitflow command line tools</a></li>
+<li><a href="http://www.freelock.com/blog/john-locke/2013-02/drupal-deployment-git-flow">Drupal deployment with gitflow</a></li>
+<li><a href="http://www.acquia.com/blog/drupal-dev-workflow-everyone-git-flow-or-just-your-flow">A Drupal Dev Workflow for everyone: git flow, or just your flow</a></li>
+</ul>
+
+
+<h3>Deploy with  git submodules</h3>
+
+<ul>
+<li><a href="http://git-scm.com/book/en/Git-Tools-Submodules">git guide to submodules</a></li>
+<li><a href="http://befused.com/drupal/site-deployment-module">Automate Drupal site updates with a deployment module</a></li>
+</ul>
+
+
+<h3>Drush and Features module</h3>
+
+<p>This looks like the way forward for us. Relatively simple. Powerful.</p>
+
+<ul>
+<li><a href="http://fuseinteractive.ca/blog/drush-make-and-features-match-made-heaven#.U5_7eI1dW3Q">Drush make and features: a match made in heaven</a></li>
+<li><a href="http://highrockmedia.com/blog/features-drush-drupal-goodness">Features + Drush = Drupal Goodness</a></li>
+<li><a href="http://nuvole.org/blog/2012/jun/25/automating-drupal-development-makefiles-features-and-beyond">Automating Drupal Development: Makefiles, Features and beyond</a></li>
+<li><a href="http://drupalize.me/series/drupal-deployment-features-drush-series">Drupal Deployment with Features &amp; Drush Series - drupalize.me</a></li>
+</ul>
+
+
+<h4>Creating and deploying a feature</h4>
+
+<ul>
+<li>Create your new feature on DEV server and download the module generated. Be careful with namespacing to give it a unique name which doesn't conflict with other existing modules</li>
+<li>Create a new repo on bitbucket for the new feature module</li>
+<li>Go into your new feature module folder and:
+
+<ul>
+<li>git init</li>
+<li>git add .</li>
+<li>git commit -m "initial commit"</li>
+<li>git remote add origin git@bitbucket.org:andesign/features-module-name.git</li>
+<li>git push -u origin master</li>
+<li>on bitbucket, set to read-only</li>
+</ul>
+</li>
+<li>move to production environment - sites/all/modules/</li>
+<li>mkdir feature-module-name</li>
+<li>cd feature-module-name</li>
+<li>git clone git@bitbucket.org:andesign/features-module-name.git</li>
+<li>move to production site admin/modules
+
+<ul>
+<li>enable Features module</li>
+</ul>
+</li>
+<li>go to admin/structure/features
+
+<ul>
+<li>click checkbox to enable new feature module</li>
+</ul>
+</li>
+</ul>
+
+
+<h4>Features override and recreating a feature</h4>
+
+<ul>
+<li>in command line, go to dev/sites/all/modules</li>
+<li>mkdir features</li>
+<li>cd features</li>
+<li>git clone git@bitbucket.org:andesign/features-module-name.git feature-module-name</li>
+<li>install diff module</li>
+<li>make some changes to your feature on your dev site</li>
+<li>Review overrides to check is ok</li>
+<li>Click Recreate tab</li>
+<li>Click Download feature</li>
+<li>Clone feature from bitbucket</li>
+<li>Replacae code in bitbucket download with code from the updated feature module you downloaded</li>
+<li>in terminal go into bitbucket feature folder</li>
+<li>git add .</li>
+<li>git commit -m "changes"</li>
+<li>git push origin master</li>
+<li>in terminal move to production environment</li>
+<li>cd to var/www/prod/sites/all/modules/feature-module-folder</li>
+<li>git pull --rebase origin master</li>
+<li>drush cc all (or clear cache in site admin)</li>
+</ul>
+
+
+<h4>Reverting features and using Drush Features Update</h4>
+
+<p>Drush give some features specific commands which are quicker than using the admin interface.</p>
+
+<pre><code>features-add (fa)     Add a component to a feature module. (DEPRECATED: use  features-export)
+features-components (fc)   List features components.
+
+features-diff (fd)    Show the difference between the  default and overridden state of a feature.
+features-export (fe)  Export a feature from your site into a module.
+features-list (fl, features)    List all the available features for your site.
+features-revert (fr)  Revert a feature module on your site.
+features-revert-all (fr-all, fra)   Revert all enabled feature module on your site.
+features-update (fu)  Update a feature module on your site.
+features-update-all (fu-all, fua)   Update all feature modules on  your site.
+</code></pre>
+
+<h4>Exporting settings variables with Strongarm</h4>
+
+<ul>
+<li>download and enable strongarm</li>
+<li>make a change to config (eg site_homepage)</li>
+<li>admin/structure/features</li>
+<li>Click Recreate</li>
+<li>Select Strongarm from Edit components dropdown</li>
+<li>Select changed element checkbox</li>
+<li>Download feature</li>
+<li>Copy all files from feature you just downloaded</li>
+<li>in git repo for module, git pull</li>
+<li>copy code from feature and replace code in git repo</li>
+<li><strong>git add .</strong></li>
+<li><strong>git commit -m "updated configuration setting with strongarm"</strong></li>
+<li><strong>git push</strong></li>
+<li>move in terminal to production sites/all/modules/features/feature-module</li>
+<li><strong>git pull</strong></li>
+<li>download strongarm on production site and enable</li>
+<li><strong>drush fl</strong> to verify state of features</li>
+<li><strong>drush fra -y</strong> (reverts to new feature defined in code in module, rather than db settings)</li>
+<li><strong>drush cc all</strong></li>
+</ul>
+
+
+<h4>Managing features with a team of developers</h4>
+
+<p>Once you have made to a change to a feature dependency on your local machine, in terminal go into site directory:</p>
+
+<ul>
+<li><strong>drush fu feature-module</strong></li>
+<li>cd sites/all/modules/features/feature-module</li>
+<li><strong>git status</strong></li>
+<li><strong>git diff</strong> to see changes to feature</li>
+<li>if a component has changed by mistake, <strong>git checkout feature-module.component.name</strong></li>
+<li><strong>git diff</strong> again to ensure you don't undo another developer's changes - update your site accordingly if necessary</li>
+<li><strong>git status</strong> again to check...</li>
+<li><strong>git add feature-module.component.name</strong></li>
+<li><strong>git commit -m "describe change"</strong></li>
+<li><strong>git push</strong></li>
+</ul>
+
+
+<h4>Exporting roles and permissions in Features</h4>
+
+<ul>
+<li>people/permissions/roles</li>
+<li>Add a new role with good namespaced name (see <a href="http://drupal.org/project/kit">drupal.org/project/kit</a>)</li>
+<li>in terminal on dev, navigate to sites/all/modles/features/feature-module</li>
+<li><strong>git pull</strong></li>
+<li><strong>drush fr feature-module</strong></li>
+<li><strong>drush cc all</strong></li>
+<li>edit permissions for new role</li>
+<li>admin/structure/features</li>
+<li>click <strong>Recreate</strong></li>
+<li>Edit components - Roles - select role</li>
+<li>Edit components - Permissions - select relevant permissions</li>
+<li>Download feature</li>
+<li>Copy files from downloaded folder into git repo folder for feature</li>
+<li>back in terminal, <strong>git diff</strong></li>
+<li>g<strong>it add .</strong></li>
+<li><strong>git commit</strong></li>
+<li><strong>git push</strong></li>
+<li>on production - <strong>git pull</strong>, <strong>drush fr</strong>, <strong>drush cc all</strong></li>
+<li>Create new user</li>
+<li>log out and log back in as newly created user to check all is good.</li>
+</ul>
+
+
+<h4>Making custom code exportable with CTools</h4>
+
+<h4>Securing Drupal</h4>
+
+<ul>
+<li><a href="http://www.practicalclouds.com/content/guide/securing-drupal7">Securing Drupal7</a></li>
+<li><a href="https://www.drupal.org/security/secure-configuration">Securing your site</a></li>
+</ul>
+
+
+<h2>Testing</h2>
+
+<p>To be written</p>
+
+<h5>References</h5>
+
+<ul>
+<li><a href="http://24ways.org/2011/front-end-style-guides/">http://24ways.org/2011/front-end-style-guides/</a></li>
+<li><a href="https://medium.com/ui-designs/a-list-of-style-guides-brand-guidelines-and-front-end-frameworks-e5bb62db91e5">https://medium.com/ui-designs/a-list-of-style-guides-brand-guidelines-and-front-end-frameworks-e5bb62db91e5</a></li>
+<li><a href="http://tmwagency.github.io/TMW-frontend-guidelines/">http://tmwagency.github.io/TMW-frontend-guidelines/</a></li>
+<li><a href="http://taitems.github.io/Front-End-Development-Guidelines/">http://taitems.github.io/Front-End-Development-Guidelines/</a></li>
+<li><a href="http://isobar-idev.github.io/code-standards/">http://isobar-idev.github.io/code-standards/</a></li>
+<li><a href="http://www.paulirish.com/2011/web-browser-frontend-and-standards-feeds-to-follow/">http://www.paulirish.com/2011/web-browser-frontend-and-standards-feeds-to-follow/</a></li>
+<li><a href="http://standards.findsubstance.com/frontend/">http://standards.findsubstance.com/frontend/</a></li>
+<li><a href="http://pointnorth.io/">http://pointnorth.io/</a></li>
+<li><a href="https://www.youtube.com/watch?v=vsTrAfJFLXI">https://www.youtube.com/watch?v=vsTrAfJFLXI</a></li>
+<li><a href="http://css-tricks.com/sass-style-guide/">http://css-tricks.com/sass-style-guide/</a></li>
+<li><a href="http://fonicmonkey.net/2013/03/25/native-sass-scss-source-map-support-in-chrome-and-rails/">http://fonicmonkey.net/2013/03/25/native-sass-scss-source-map-support-in-chrome-and-rails/</a></li>
+<li><a href="http://snugug.com/musings/debugging-sass-source-maps">http://snugug.com/musings/debugging-sass-source-maps</a></li>
+</ul>
+{% endblock %}
+
+{% block scripts %}
+
+	<script>
+	        $(document).ready(function() {
+	            $('#toc').toc({
+	            	'selectors': 'h1,h2,h3',
+	            	'container': '#main'
+	            });
+	        });
+
+	</script>
+{% endblock %}

@@ -1,0 +1,72 @@
+<!doctype html>
+<!--[if IEMobile 7]><html class="iem7"  lang="en" dir="ltr"><![endif]-->
+<!--[if lte IE 6]><html class="lt-ie9 lt-ie8 lt-ie7"  lang="en" dir="ltr"><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><html class="lt-ie9 lt-ie8"  lang="en" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="lt-ie9"  lang="en" dir="ltr"><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><html  lang="en" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#" class="no-js"><!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+         <meta name="viewport" content="maximum-scale=1.0,width=device-width,initial-scale=1.0,user-scalable=0">
+        <title>{% block title %}Mixture + Compass{% endblock %}</title>
+        {{ "custom.css" | asset_url | stylesheet_tag }}
+        {{ "ui.totop.min.css" | asset_url | stylesheet_tag }}
+       
+        <!-- TODO: Complete this project :) -->
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+        {{ "modernizr.js" | asset_url | script_tag }}
+        {{ "responsive-nav.min.js" | asset_url | script_tag }}
+
+        <!--[if lt IE 9]>
+            {{ "html5-respond.min.js" | asset_url | script_tag }}
+        <![endif]-->
+    </head>
+
+    {% block bodytag %}<body class="wrapper html">{% endblock %}
+        <div id="page">
+            <header class="header" id="header" role="banner">
+                <a href="/" title="Home" rel="home" class="header__logo" id="logo"><img src="{{ "logo.png" | asset_url }}" alt="Home" class="header__logo-image" /></a>  <h1>starter kit</h1>
+                <div class="header__region region region-header">
+                    {% include "navigation" %}
+                </div>
+            </header>
+            <div id="main">
+                <div id="content" class="column" role="main">
+                    {% block content %}{% endblock %}
+                </div>
+                <aside class="sidebars">
+                    {% block sidebars %}{% endblock %}
+                </aside>
+            </div><!-- /#main -->
+             {% include "footer" %}
+        </div><!-- /#page -->
+        
+        {{ "jquery.1.7.2.js" | asset_url | script_tag }}
+        {{ "jquery.effects.core.min.js" | asset_url | script_tag }}
+        {{ "easing.js" | asset_url | script_tag }}
+        {{ "jquery.ui.totop.js" | asset_url | script_tag }}
+        {{ "scripts.js" | asset_url | script_tag }}
+        {{ "jquery.fittext.js" | asset_url | script_tag }}
+        {{ "jquery.lettering.js" | asset_url | script_tag }}
+        {{ "jquery.textillate.js" | asset_url | script_tag }}
+        {{ "toc.min.js" | asset_url | script_tag }}
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $().UItoTop({ easingType: 'easeOutQuart' });
+            });
+        </script>
+
+        <script>
+            $(function () {
+                $('.tlt').textillate();
+            })
+        </script>
+
+
+
+        {% block scripts %}
+           
+        {% endblock %}
+    </body>
+</html>

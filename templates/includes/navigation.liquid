@@ -1,0 +1,9 @@
+<nav class="nav-collapse">
+<ul class="nav">
+	<li {% if mixture.url == "index" %}class="current"{% endif %}><a href="/">Home</a></li>
+	<li {% if mixture.url == "right-sidebar" %}class="current"{% endif %}><a href="/right-sidebar">Right sidebar</a></li>
+	<li {% if mixture.url == "left-sidebar" %}class="current"{% endif %}><a href="/left-sidebar">Left sidebar</a></li>
+	<li {% if mixture.url == "two-sidebars" %}class="current"{% endif %}><a href="/two-sidebars">Two sidebars</a></li>
+	<li {% if mixture.url == "styleguide" %}class="current"{% endif %}><a href="/styleguide">Style guide</a></li>
+</ul>
+</nav>

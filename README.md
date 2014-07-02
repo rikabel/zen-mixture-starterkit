@@ -1,4 +1,4 @@
-# and. starterkit
+# zen mixture starterkit
 
 Hi! This is a [mixture.io](http://mixture.io) "boilerplate" (starterkit) for building prototype static HTML websites prior to their later implementation as a full [Drupal](http://drupal.org)-powered site using a [Zen](http://drupal.org/project/zen) sub-theme. 
 
